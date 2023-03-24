@@ -3,12 +3,22 @@ import {ProductRow } from "./ProductRow/ProductRow";
 
 
 
-export function ProductTable({products})
+export function ProductTable({products, filterText, inStockOnly})
 {
   const row = [];
   let lastCategory = null;
   products.forEach(product => {
+    if ( 
+      product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1
+    )
+    {
+      return;
+    }
 
+
+    if ( inStockOnly && !product.stocked){
+      return;
+    }
     if (product.category !== lastCategory)
     {
       row.push(
@@ -19,7 +29,8 @@ export function ProductTable({products})
 
     }
 
-    row.push(<ProductRow product={product}
+    row.push(<ProductRow 
+                      product={product}
                       key={product.name} />
     );
     
